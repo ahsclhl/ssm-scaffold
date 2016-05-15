@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hen.ssmscaffold.web.dao.ItemGroupEntityDao" >
+  <resultMap id="BaseResultMap" type="com.hen.ssmscaffold.web.entity.ItemGroupEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="FullResultMap" type="com.hen.ssmscaffold.web.entity.ItemGroupEntity" extends="BaseResultMap">
+  	<collection property="items" javaType="java.util.List" ofType="com.hen.ssmscaffold.web.entity.ItemEntity">
+  		<id column="i_id" property="id" jdbcType="INTEGER" />
+    	<result column="i_groupCode" property="groupcode" jdbcType="VARCHAR" />
+    	<result column="i_code" property="code" jdbcType="VARCHAR" />
+    	<result column="i_name" property="name" jdbcType="VARCHAR" />
+  	</collection>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from itemGroup
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPrimaryKeyWithJoin" resultMap="FullResultMap" parameterType="java.lang.Integer" >
+    select 
+    g.id, g.code, g.name, i.id i_id, i.groupCode i_groupCode, i.code i_code, i.name i_name
+    from itemGroup g left join item i on g.code=i.groupcode
+    where g.id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from itemGroup
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hen.ssmscaffold.web.entity.ItemGroupEntity" >
+   <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+           SELECT LAST_INSERT_ID() AS ID
+   </selectKey>
+    insert into itemGroup (id, code, name
+      )
+    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hen.ssmscaffold.web.entity.ItemGroupEntity" >
+    insert into itemGroup
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hen.ssmscaffold.web.entity.ItemGroupEntity" >
+    update itemGroup
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hen.ssmscaffold.web.entity.ItemGroupEntity" >
+    update itemGroup
+    set code = #{code,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

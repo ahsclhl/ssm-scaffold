@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="js/jquery/jquery-2.2.0.js"></script>
+    <title>Insert title here</title>
+</head>
+<body>
+
+	<ul id="result"></ul>
+    <input id="btn" type="button" value="click me"/>
+    <script>
+		$("#btn").click(function() {
+            $.ajax({
+                url:"http://localhost:8080/ssm-scaffold/test/ajax",
+                success: function(c) {
+                    console.log("success " + c);
+                    $("<li>" + c + "</li>").appendTo($("#result"));
+                }
+            })
+        });
+    </script>
+</body>
+</html>
